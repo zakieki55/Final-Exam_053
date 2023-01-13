@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/Class.java to edit this template
+-->
+<html>
+    <head>
+        <title>Final Exam</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    </head>
+    <body>
+        <div>Data Orang</div>
+        <hr />
+        
+        <script>
+            const url = "http://localhost:8080/person";
+            
+            function get() {
+                $.ajax({
+                  url: url,
+                  method: "GET",
+                  dataType: "json",
+                  success: function (data) {
+                    
+                    $("#mytable").find("tbody").empty(); 
+                    $.each(data, function (key, value) {
+                      //fill data to table
+                      var td =
+                        "<tr><td>" +
+                        value.id +
+                        "</td> <td>" +
+                        value.nik +
+                        "</td> <td>" +
+                        value.nama +
+                        "</td></tr>";
+                        value.ttl +
+                        "</td></tr>";
+                         value.photo +
+                        "</td></tr>";
+                        value.timestamp +
+                        "</td></tr>";
+                      $("#mytable").find("tbody").append(td);
+                    });
+                  },
+                });
+              }
+              
+            function post(){
+                let editID = document.getElementById("myid").value;
+                let nik = document.getElementById("nik").value;
+                let nama = document.getElementById("nama").value;
+                let ttl = document.getElementById("ttl").value;
+                let dataText = { id: editID, nik: nik, nama: nama, ttl: ttl };
+                let dataJson = JSON.stringify(dataText);
+                $.ajax({
+                  url: url,
+                  method: "POST",
+                  data: dataJson,
+                  contentType: "application/json",
+                  dataType: "text",
+                  success: function (result) {
+                    get();
+                  },
+                });
+            }
+            function put() {
+                let editID = document.getElementById("myid").value;
+                let nik = document.getElementById("nik").value;
+                let nama = document.getElementById("nama").value;
+                let ttl = document.getElementById("ttl").value;
+                let dataText = { id: editID, nik: nik, nama: nama, ttl: ttl, timestamp: timestamp };
+                let dataJson = JSON.stringify(dataText);
+                $.ajax({
+                  url: "http://localhost:8080/person",
+                  method: "PUT",
+                  data: dataJson,
+                  contentType: "application/json",
+                  dataType: "text",
+                  success: function (result) {
+                    get();
+                  },
+                });
+              }
+            function delID() {
+                let editID = document.getElementById("myid").value;
+                let dataText = { id: editID };
+                let dataJson = JSON.stringify(dataText);
+                $.ajax({
+                  url: url,
+                  method: "DELETE",
+                  data: dataJson,
+                  contentType: "application/json",
+                  dataType: "text",
+                  success: function (result) {
+                    get();
+                  },
+                });
+              }
+        </script>
+        <table>
+      <tr>
+        <td>ID</td>
+        <td>:</td>
+        <td><input type="text" id="myid" name="myid" /></td>
+        <td><button onclick="get()">GET</button></td>
+      </tr>
+      <tr>
+        <td>NIK</td>
+        <td>:</td>
+        <td><input type="text" id="nik" name="nik" /></td>
+        <td><button onclick="post()">INSERT</button></td>
+      </tr>
+      <tr>
+        <td>Nama Orang</td>
+        <td>:</td>
+        <td><input type="text" id="nama" name="nama" /></td>
+        <td><button onclick="put()">UPDATE</button></td>
+      </tr>
+      <tr>
+        <td>Tempat Tanggal Lahir</td>
+        <td>:</td>
+        <td><input type="text" id="ttl" name="ttl"/></td>
+        <td><button onclick="delID()">DELETE</button></td>
+      </tr>
+      
+    </table>
+        <hr />
+    <br />
+
+    <table id="mytable" border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>NIK</th>
+          <th>Nama</th>
+          <th>TTL</th>
+          <th>timestamp</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+      </table>
+    </body>
+</html>
